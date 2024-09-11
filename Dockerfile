@@ -52,10 +52,7 @@ USER ubuntu
 ENV USER=ubuntu
 WORKDIR /home/ubuntu    
 
-VOLUME /home/ubuntu/.m2
-VOLUME /home/ubuntu/.npm
-VOLUME /home/ubuntu/.config
-VOLUME /home/ubuntu/workspace
+RUN mkdir -p /home/ubuntu/.m2 /home/ubuntu/.npm /home/ubuntu/.config /home/ubuntu/workspace
 
 # Visual Studio Code Extentions
 ENV VSCODE_USER /home/ubuntu/.local/share/code-server/User

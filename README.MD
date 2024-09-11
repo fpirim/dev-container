@@ -8,6 +8,7 @@ This project sets up a public development environment using Docker. It includes 
 - **Node.js 18.19.0** for JavaScript/TypeScript development
 - **code-server** for running VS Code in a browser
 - **Docker** for containerized development
+- **Docker Compose** for containerized development management
 - **Traefik** (optional) for reverse proxying code-server and applications
 
 ## Prerequisites

@@ -76,7 +76,8 @@ RUN $(dirname /opt/code-server-*/bin)/bin/code-server \
         --install-extension vscjava.vscode-java-dependency \        
         --install-extension vscjava.vscode-spring-initializr \
         --install-extension vscjava.vscode-spring-boot-dashboard \
-        --install-extension redhat.vscode-yaml 
+        --install-extension redhat.vscode-yaml \
+        --install-extension redhat.fabric8-analytics
 
 # JDK
 ENV JAVA_VERSION=11.0.24+8
@@ -119,12 +120,18 @@ RUN wget -q -O docker.tar.gz https://download.docker.com/linux/static/stable/arm
     sudo install docker/docker /usr/local/bin/ && \
     rm -rf docker*
 
+# Docker Compose
+ARG DOCKER_COMPOSE_VERSION="2.29.2"
+RUN sudo mkdir -p /usr/local/lib/docker/cli-plugins && \
+    sudo wget -q -O /usr/local/lib/docker/cli-plugins/docker-compose https://github.com/docker/compose/releases/download/v${DOCKER_COMPOSE_VERSION}/docker-compose-linux-armv7 && \
+    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+    
 RUN rm -f LICENSE README.md
 
 RUN mkdir /home/ubuntu/.bin && \
     echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" | sudo tee -a /home/ubuntu/.bashrc > /dev/null
 
-RUN mkdir -p ${VSCODE_USER} && echo "{\"java.home\":\"$(dirname /opt/jdk-*/bin/)\",\"maven.terminal.useJavaHome\":true, \"maven.executable.path\":\"/opt/apache-maven-${MAVEN_VERSION}/bin/mvn\",\"spring-boot.ls.java.home\":\"$(dirname /opt/jdk-*/bin/)\",\"files.exclude\":{\"**/.classpath\":true,\"**/.project\":true,\"**/.settings\":true,\"**/.factorypath\":true},\"redhat.telemetry.enabled\":false,\"java.server.launchMode\": \"Standard\",\"workbench.colorTheme\": \"Visual Studio Dark\", \"keyboard.layout\": \"0000041F\"}" | jq . > ${VSCODE_USER}/settings.json
+RUN mkdir -p ${VSCODE_USER} && echo "{\"java.home\":\"$(dirname /opt/jdk-*/bin/)\",\"maven.terminal.useJavaHome\":true,\"spring-boot.ls.java.home\":\"$(dirname /opt/jdk-*/bin/)\",\"files.exclude\":{\"**/.classpath\":true,\"**/.project\":true,\"**/.settings\":true,\"**/.factorypath\":true},\"redhat.telemetry.enabled\":false,\"java.server.launchMode\": \"Standard\",\"workbench.colorTheme\": \"Visual Studio Dark\", \"keyboard.layout\": \"0000041F\"}" | jq . > ${VSCODE_USER}/settings.json
 RUN echo 'for f in /etc/profile.d/*.sh;do source $f;done' | sudo tee -a /home/ubuntu/.bashrc > /dev/null
 RUN rm -f /home/ubuntu/.wget-hsts
 

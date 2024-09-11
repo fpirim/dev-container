@@ -4,6 +4,7 @@ services:
     build:
       context: .
       target: dev-container
+    image: ${DOMAIN}/dev-container
     networks:
       - proxy
     extra_hosts:
@@ -14,23 +15,23 @@ services:
       - M2_DATA:/home/ubuntu/.m2
       - NPM_DATA:/home/ubuntu/.npm
       - WORKSPACE_DATA:/home/ubuntu/workspace
-    labels:
-      - "traefik.enable=true"
-      # application
-      - "traefik.http.routers.app-dev.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.app-dev.entrypoints=https"      
-      - "traefik.http.routers.app-dev.tls=true"
-      - "traefik.http.routers.app-dev.tls.certresolver=${CERTRESOLVER}"
-      - "traefik.http.services.app-dev.loadbalancer.server.port=9060"
-      - "traefik.http.routers.app-dev.service=app-dev"
-      # code server
-      - "traefik.http.routers.vscode-dev.rule=Host(`vscode${DOMAIN}`)"
-      - "traefik.http.routers.vscode-dev.entrypoints=https"      
-      - "traefik.http.routers.vscode-dev.tls=true"
-      - "traefik.http.routers.vscode-dev.tls.certresolver=${CERTRESOLVER}"
-      - "traefik.http.routers.vscode-dev.service=vscode-dev"
-      - "traefik.http.services.vscode-dev.loadbalancer.passhostheader=true"
-      - "traefik.http.services.vscode-dev.loadbalancer.server.port=9394"
+#    labels:
+#     - "traefik.enable=true"
+#     # application
+#     - "traefik.http.routers.app-dev.rule=Host(`${DOMAIN}`)"
+#     - "traefik.http.routers.app-dev.entrypoints=https"      
+#     - "traefik.http.routers.app-dev.tls=true"
+#     - "traefik.http.routers.app-dev.tls.certresolver=${CERTRESOLVER}"
+#     - "traefik.http.services.app-dev.loadbalancer.server.port=9060"
+#     - "traefik.http.routers.app-dev.service=app-dev"
+#     # code server
+#     - "traefik.http.routers.vscode-dev.rule=Host(`vscode${DOMAIN}`)"
+#     - "traefik.http.routers.vscode-dev.entrypoints=https"      
+#     - "traefik.http.routers.vscode-dev.tls=true"
+#     - "traefik.http.routers.vscode-dev.tls.certresolver=${CERTRESOLVER}"
+#     - "traefik.http.routers.vscode-dev.service=vscode-dev"
+#     - "traefik.http.services.vscode-dev.loadbalancer.passhostheader=true"
+#     - "traefik.http.services.vscode-dev.loadbalancer.server.port=9394"
     
 volumes:
   M2_DATA:

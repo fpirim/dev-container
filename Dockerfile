@@ -55,6 +55,7 @@ WORKDIR /home/ubuntu
 VOLUME /home/ubuntu/.m2
 VOLUME /home/ubuntu/.npm
 VOLUME /home/ubuntu/.config
+VOLUME /home/ubuntu/workspace
 
 # Visual Studio Code Extentions
 ENV VSCODE_USER /home/ubuntu/.local/share/code-server/User

@@ -8,9 +8,12 @@ services:
       - proxy
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    command: code-server --bind-addr 0.0.0.0:9394 --auth none --disable-telemetry
+    command: code-server --bind-addr 0.0.0.0:9394 --auth none --disable-telemetry /home/ubuntu/workspace
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - M2_DATA:/home/ubuntu/.m2
+      - NPM_DATA:/home/ubuntu/.npm
+      - WORKSPACE_DATA:/home/ubuntu/workspace
     labels:
       - "traefik.enable=true"
       # application
@@ -25,11 +28,15 @@ services:
       - "traefik.http.routers.vscode-dev.entrypoints=https"      
       - "traefik.http.routers.vscode-dev.tls=true"
       - "traefik.http.routers.vscode-dev.tls.certresolver=${CERTRESOLVER}"
-#      - "traefik.http.routers.vscode-dev.middlewares=middlewares-authentik"
       - "traefik.http.routers.vscode-dev.service=vscode-dev"
       - "traefik.http.services.vscode-dev.loadbalancer.passhostheader=true"
       - "traefik.http.services.vscode-dev.loadbalancer.server.port=9394"
     
+volumes:
+  M2_DATA:
+  NPM_DATA:
+  WORKSPACE_DATA:
+
 networks:
   proxy:
     external: true

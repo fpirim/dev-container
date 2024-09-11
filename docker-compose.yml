@@ -1,0 +1,35 @@
+services:
+  
+  dev:
+    build:
+      context: .
+      target: dev-container
+    networks:
+      - proxy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: code-server --bind-addr 0.0.0.0:9394 --auth none --disable-telemetry
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      # application
+      - "traefik.http.routers.app-dev.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.app-dev.entrypoints=https"      
+      - "traefik.http.routers.app-dev.tls=true"
+      - "traefik.http.routers.app-dev.tls.certresolver=${CERTRESOLVER}"
+      - "traefik.http.services.app-dev.loadbalancer.server.port=9060"
+      - "traefik.http.routers.app-dev.service=app-dev"
+      # code server
+      - "traefik.http.routers.vscode-dev.rule=Host(`vscode${DOMAIN}`)"
+      - "traefik.http.routers.vscode-dev.entrypoints=https"      
+      - "traefik.http.routers.vscode-dev.tls=true"
+      - "traefik.http.routers.vscode-dev.tls.certresolver=${CERTRESOLVER}"
+#      - "traefik.http.routers.vscode-dev.middlewares=middlewares-authentik"
+      - "traefik.http.routers.vscode-dev.service=vscode-dev"
+      - "traefik.http.services.vscode-dev.loadbalancer.passhostheader=true"
+      - "traefik.http.services.vscode-dev.loadbalancer.server.port=9394"
+    
+networks:
+  proxy:
+    external: true

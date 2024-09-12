@@ -14,9 +14,7 @@ services:
     command: code-server --bind-addr 0.0.0.0:9394 --auth none --disable-telemetry /home/ubuntu/workspace
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - M2_DATA:/home/ubuntu/.m2
-      - NPM_DATA:/home/ubuntu/.npm
-      - WORKSPACE_DATA:/home/ubuntu/workspace
+      - DEV_DATA:/home/ubuntu
 #    labels:
 #     - "traefik.enable=true"
 #     # application
@@ -40,9 +38,7 @@ services:
 #     - "traefik.tcp.services.dev-ssh.loadbalancer.server.port=22"
     
 volumes:
-  M2_DATA:
-  NPM_DATA:
-  WORKSPACE_DATA:
+  DEV_DATA:
 
 networks:
   proxy:

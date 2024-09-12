@@ -29,6 +29,10 @@ Create a `.env` file in the project root and set the `DOMAIN` environment variab
 ```bash
 DOMAIN=example.com
 CERTRESOLVER=myresolver
+SSH_AUTHORIZED_KEYS="ssh-rsa AAAAB3...key1 user1@host1
+ssh-rsa AAAAB3...key2 user2@host2
+ssh-rsa AAAAB3...key3 user3@host3
+"
 ```
 
 ### 3. Build the Docker Image
@@ -57,14 +61,16 @@ Example .env file:
 ```bash
 DOMAIN=example.com
 CERTRESOLVER=myresolver
+SSH_AUTHORIZED_KEYS="ssh-rsa AAAAB3...key1 user1@host1
+ssh-rsa AAAAB3...key2 user2@host2
+ssh-rsa AAAAB3...key3 user3@host3
+"
 ```
 
 ### Volumes
 The following data is persisted between container runs using Docker volumes:
 
-`.m2` for Maven cache
-`.npm` for NPM cache
-`workspace` for your development workspace
+`home` for /home/ubuntu
 
 ### Stopping the Environment
 To stop the development container:

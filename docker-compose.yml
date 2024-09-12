@@ -4,6 +4,8 @@ services:
     build:
       context: .
       target: dev-container
+      args:
+        SSH_AUTHORIZED_KEYS: ${SSH_AUTHORIZED_KEYS}
     image: ${DOMAIN}/dev-container
     networks:
       - proxy
@@ -30,8 +32,12 @@ services:
 #     - "traefik.http.routers.vscode-dev.tls=true"
 #     - "traefik.http.routers.vscode-dev.tls.certresolver=${CERTRESOLVER}"
 #     - "traefik.http.routers.vscode-dev.service=vscode-dev"
-#     - "traefik.http.services.vscode-dev.loadbalancer.passhostheader=true"
 #     - "traefik.http.services.vscode-dev.loadbalancer.server.port=9394"
+#      # ssh server
+#     - "traefik.tcp.routers.dev-ssh.rule=HostSNI(`*`)"
+#     - "traefik.tcp.routers.dev-ssh.entrypoints=ssh"      
+#     - "traefik.tcp.routers.dev-ssh.service=dev-ssh"
+#     - "traefik.tcp.services.dev-ssh.loadbalancer.server.port=22"
     
 volumes:
   M2_DATA:
